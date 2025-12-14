@@ -2,55 +2,43 @@
 const express = require("express");
 const router = express.Router();
 
-// sample messages
+// Shared messages array
 const messages = [
-  {
-    text: "Hi there!",
-    user: "Amando",
-    added: new Date(),
-  },
-  {
-    text: "Hello World!",
-    user: "Charles",
-    added: new Date(),
-  },
+  { text: "Hi there!", user: "Amando", added: new Date() },
+  { text: "Hello World!", user: "Charles", added: new Date() },
 ];
 
-// index route
+// Index route - show all messages
 router.get("/", (req, res) => {
   res.render("index", {
     title: "Mini Messageboard",
-    messages: messages,
+    messages,
   });
 });
 
-// new message form route
+// New message form
 router.get("/new", (req, res) => {
   res.render("form", { title: "New Message" });
 });
 
-// handle form submission
+// Handle new message submission
 router.post("/new", (req, res) => {
-  const messageUser = req.body.messageUser;
-  const messageText = req.body.messageText;
+  const { messageUser, messageText } = req.body;
 
   messages.push({
-    text: messageText,
     user: messageUser,
+    text: messageText,
     added: new Date(),
   });
 
   res.redirect("/");
 });
-
-// display an individual message
+// Individual message view
 router.get("/message/:id", (req, res) => {
   const id = req.params.id;
   const message = messages[id];
 
-  if (!message) {
-    return res.status(404).send("Message not found");
-  }
+  if (!message) return res.status(404).send("Message not found");
 
   res.render("message", { message, id });
 });
