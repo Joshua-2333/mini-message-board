@@ -2,10 +2,10 @@
 const express = require("express");
 const router = express.Router();
 
-// Shared messages array
+// Shared messages array (in-memory)
 const messages = [
-  { text: "Hi there!", user: "Amando", added: new Date() },
-  { text: "Hello World!", user: "Charles", added: new Date() },
+  { user: "Amando", text: "Hi there!", added: new Date() },
+  { user: "Charles", text: "Hello World!", added: new Date() },
 ];
 
 // Index route - show all messages
@@ -25,22 +25,68 @@ router.get("/new", (req, res) => {
 router.post("/new", (req, res) => {
   const { messageUser, messageText } = req.body;
 
+  if (!messageUser || !messageText) {
+    return res.redirect("/new");
+  }
+
   messages.push({
-    user: messageUser,
-    text: messageText,
+    user: messageUser.trim(),
+    text: messageText.trim(),
     added: new Date(),
   });
 
   res.redirect("/");
 });
+
 // Individual message view
 router.get("/message/:id", (req, res) => {
-  const id = req.params.id;
-  const message = messages[id];
+  const id = Number(req.params.id);
 
-  if (!message) return res.status(404).send("Message not found");
+  if (Number.isNaN(id) || !messages[id]) {
+    return res.status(404).send("Message not found");
+  }
 
-  res.render("message", { message, id });
+  res.render("message", { message: messages[id], id });
+});
+
+// Edit message form
+router.get("/message/:id/edit", (req, res) => {
+  const id = Number(req.params.id);
+
+  if (Number.isNaN(id) || !messages[id]) {
+    return res.status(404).send("Message not found");
+  }
+
+  res.render("edit", { message: messages[id], id });
+});
+
+// Handle edit submission
+router.post("/message/:id/edit", (req, res) => {
+  const id = Number(req.params.id);
+  const { messageUser, messageText } = req.body;
+
+  if (Number.isNaN(id) || !messages[id]) {
+    return res.status(404).send("Message not found");
+  }
+
+  messages[id] = {
+    user: messageUser.trim(),
+    text: messageText.trim(),
+    added: new Date(),
+  };
+
+  res.redirect(`/message/${id}`);
+});
+
+// Delete message
+router.post("/message/:id/delete", (req, res) => {
+  const id = Number(req.params.id);
+
+  if (!Number.isNaN(id) && messages[id]) {
+    messages.splice(id, 1);
+  }
+
+  res.redirect("/");
 });
 
 module.exports = router;

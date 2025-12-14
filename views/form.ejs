@@ -1,22 +1,56 @@
+<!-- views/form.ejs -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8">
     <title>Create New Message</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/styles.css">
   </head>
   <body>
-    <h1>Create a New Message</h1>
+    <div class="container">
+      <header>
+        <h1>Create a New Message</h1>
+      </header>
 
-    <form method="POST" action="/new">
-      <label>Your Name:</label><br>
-      <input type="text" name="messageUser" required><br><br>
+      <form method="POST" action="/new">
+        <label for="messageUser">Your Name</label>
+        <input
+          type="text"
+          id="messageUser"
+          name="messageUser"
+          required
+        >
 
-      <label>Your Message:</label><br>
-      <input type="text" name="messageText" required><br><br>
+        <label for="messageText">Your Message</label>
+        <input
+          type="text"
+          id="messageText"
+          name="messageText"
+          maxlength="140"
+          required
+          aria-describedby="charCount"
+        >
 
-      <button type="submit">Submit</button>
-    </form>
+        <div id="charCount" aria-live="polite">
+          140 characters remaining
+        </div>
 
-    <br>
-    <a href="/">Back to messages</a>
+        <button type="submit">Submit</button>
+      </form>
+
+      <a class="nav-link" href="/">← Back to messages</a>
+    </div>
+
+    <script>
+      const input = document.getElementById("messageText");
+      const counter = document.getElementById("charCount");
+      const max = input.maxLength;
+
+      input.addEventListener("input", () => {
+        const remaining = max - input.value.length;
+        counter.textContent = `${remaining} characters remaining`;
+      });
+    </script>
   </body>
 </html>

@@ -1,16 +1,36 @@
+<!-- views/message.ejs -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Message Details</title>
+    <meta charset="UTF-8">
+    <title>Message from <%= message.user %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/styles.css">
   </head>
   <body>
-    <h1>Message Details</h1>
+    <div class="container">
+      <header>
+        <h1>Message Details</h1>
+      </header>
 
-    <p><strong>User:</strong> <%= message.user %></p>
-    <p><strong>Message:</strong> <%= message.text %></p>
-    <p><strong>Posted:</strong> <%= message.added.toLocaleString() %></p>
+      <div class="message-detail">
+        <p>
+          <strong>User:</strong>
+          <%= message.user %>
+        </p>
 
-    <br>
-    <a href="/">Back to all messages</a>
+        <p>
+          <strong>Message:</strong>
+          <%= message.text %>
+        </p>
+
+        <p class="message-meta">
+          <strong>Posted:</strong>
+          <%= message.added.toLocaleString() %>
+        </p>
+      </div>
+
+      <a class="nav-link" href="/">← Back to all messages</a>
+    </div>
   </body>
 </html>

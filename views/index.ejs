@@ -1,26 +1,38 @@
+<!-- views/index.ejs -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8">
     <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/styles.css">
   </head>
   <body>
-    <h1>Mini Message Board</h1>
+    <div class="container">
+      <header>
+        <h1><%= title %></h1>
+      </header>
 
-    <a href="/new">Create new message</a>
+      <ul class="message-list">
+        <% messages.forEach((message, index) => { %>
+          <li class="message-card">
+            <strong><%= message.user %></strong>
+            <p><%= message.text %></p>
 
-    <ul>
-      <% messages.forEach((message, index) => { %>
-        <li>
-          <strong><%= message.user %></strong>: <%= message.text %>
-          <br>
-          <small><%= message.added.toLocaleString() %></small>
-          <br>
-          <a href="/message/<%= index %>">Open</a>
-        </li>
-        <hr>
-      <% }) %>
-    </ul>
+            <div class="message-meta">
+              <%= message.added.toLocaleString() %>
+            </div>
 
+            <div class="message-actions">
+              <a href="/message/<%= index %>" class="open">
+                Open
+              </a>
+            </div>
+          </li>
+        <% }) %>
+      </ul>
+
+      <a class="nav-link" href="/new">Create new message</a>
+    </div>
   </body>
 </html>
