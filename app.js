@@ -2,27 +2,27 @@
 const express = require("express");
 const path = require("path");
 
-const indexRouter = require("./routes/index");   // Home page + message list
-const newMessageRouter = require("./routes/new"); // Create new message route
+const indexRouter = require("./routes/index");
+const newMessageRouter = require("./routes/new");
 
 const app = express();
-const PORT = 3000;
 
-// Set up EJS views
+// IMPORTANT: Render provides the PORT
+const PORT = process.env.PORT || 3000;
+
+// View engine
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-// Middleware to parse form data
+// Middleware
 app.use(express.urlencoded({ extended: true }));
-
-// Static files (optional)
 app.use(express.static(path.join(__dirname, "public")));
 
-// ROUTES --------------------------------------------------
-app.use("/", indexRouter);      // Homepage
-app.use("/new", newMessageRouter); // Form + POST handling
+// Routes
+app.use("/", indexRouter);
+app.use("/new", newMessageRouter);
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
