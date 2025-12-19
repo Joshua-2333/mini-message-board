@@ -14,3 +14,7 @@ A simple message board application built with **Node.js**, **Express**, and **EJ
 - Dark mode support based on system preferences.
 
 > Note: Only the user who submits a message can edit or delete it if that feature is implemented. Otherwise, messages are read-only.
+
+## Project View
+
+- https://mini-message-board-ecqr.onrender.com/
